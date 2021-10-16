@@ -6,6 +6,7 @@ use App\Models\url;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UrlController extends Controller
 {
@@ -17,6 +18,11 @@ class UrlController extends Controller
     protected $messages = [
         'url.required' => 'The :attribute field is mandatory.'
     ];
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -26,7 +32,7 @@ class UrlController extends Controller
     public function index()
     {
         //
-        $urls = url::paginate();
+        $urls = url::where('user', Auth::user()->id)->paginate();
 
 
         return view('urls.index', [
@@ -62,8 +68,8 @@ class UrlController extends Controller
             'code' =>  Str::random(5),
             'url' => $request->url,
             'views' => 0,
+            'user' => Auth::user()->id
         ];
-
 
 
         $url = url::create($data);
@@ -139,18 +145,5 @@ class UrlController extends Controller
     {
         $rules = $this->rules;
         return $rules;
-    }
-
-    public function showUrl($code = null)
-    {
-        # code...
-        if ($code) {
-            $url = url::where('code', $code)->first();
-            $url->views +=  1;
-            $url->save();
-            return redirect()->to($url->url);
-        } else {
-            return redirect()->route('urls.index');
-        }
     }
 }

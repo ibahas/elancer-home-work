@@ -18,6 +18,7 @@ class CreateUrlsTable extends Migration
             $table->string('url');
             $table->string('code')->unique();
             $table->integer('views');
+            $table->bigInteger('user');
             $table->timestamps();
         });
     }

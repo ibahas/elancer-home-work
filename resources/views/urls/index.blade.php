@@ -17,8 +17,9 @@ Urls <small><a href="{{ route('urls.create') }}" class="btn btn-sm btn-outline-p
                 <th>code</th>
                 <th>views</th>
                 <th>Created At</th>
-                <th></th>
-                <th></th>
+                <th>Action</th>
+                <th>Added By</th>
+
             </tr>
         </thead>
         <tbody>
@@ -26,16 +27,19 @@ Urls <small><a href="{{ route('urls.create') }}" class="btn btn-sm btn-outline-p
             <tr>
                 <td>{{ $url->id }}</td>
                 <td><a href="{{ route('urls.show', ['url' => $url->id]) }}">{{ $url->url }}</a></td>
-                <td><a href="{{ route('showUrl',$url->code)}}" >Link</a> </td>
+                <td><a href="{{ route('showUrl',$url->code)}}">Link</a> </td>
                 <td>{{ $url->views }}</td>
                 <td>{{ $url->created_at }}</td>
-                <td><a href="{{ route('urls.edit', [$url->id]) }}" class="btn btn-sm btn-dark">Edit</a></td>
-                <td>
+                <td><a href="{{ route('urls.edit', [$url->id]) }}" class="btn btn-sm btn-dark">Edit</a>
+                    <br>
                     <form action="{{ route('urls.destroy', $url->id) }}" method="post">
                         @csrf
                         @method('delete')
                         <button class="btn btn-sm btn-danger">Delete</button>
                     </form>
+                </td>
+                <td>
+                    {{$url->findUser->name}}
                 </td>
             </tr>
             @endforeach

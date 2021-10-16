@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\UrlController;
 use App\Http\Controllers\Dashboard\CategoriesController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +19,14 @@ use App\Http\Controllers\Dashboard\CategoriesController;
 //     return view('welcome');
 // });
 
-Route::get('/{code?}', [UrlController::class, 'showUrl'])->name('showUrl');
+Auth::routes();
 
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/{code?}', [HomeController::class, 'showUrl'])->name('showUrl');
 Route::group([
     'prefix' => '/dashboard',
     'namespace' => 'Dashboard',
+    // 'middleware' => ['auth'],
 ], function () {
     Route::resource(
         'categories',
@@ -33,3 +37,7 @@ Route::group([
         'UrlController'
     );
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

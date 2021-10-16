@@ -9,8 +9,12 @@ class url extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'url', 'code', 'views'
+        'url', 'code', 'views', 'user'
     ];
     protected $perPage = 10;
 
+    public function findUser()
+    {
+        return $this->belongsTo(User::class, 'user', 'id');
+    }
 }

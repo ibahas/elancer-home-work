@@ -41,4 +41,11 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // User has one freelaner profile
+    public function urls()
+    {
+        return $this->hasOne(urls::class, 'user', 'id')
+            ->withDefault();
+    }
 }
